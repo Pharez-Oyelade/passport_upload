@@ -18,7 +18,10 @@ const app = express();
 // Middleware
 app.use(
   cors({
-    origin: "https://passport-upload.vercel.app", // or use "*" for all origins (not recommended for production)
+    origin: [
+      "https://passport-upload.vercel.app",
+      "https://passport-upload-admin.vercel.app",
+    ],
     credentials: true,
   })
 );
