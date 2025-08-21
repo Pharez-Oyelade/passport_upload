@@ -48,3 +48,11 @@ const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
+
+// Self-ping to prevent Render sleeping
+
+setInterval(() => {
+  fetch("https://passport-upload.onrender.com/")
+    .then(() => console.log("Self-ping to prevent sleep"))
+    .catch((err) => console.log("Self-ping failed:", err));
+}, 14 * 60 * 1000);

@@ -5,14 +5,18 @@ export async function createStudent(req, res) {
   try {
     const { department, matricNumber } = req.body;
     if (!req.file) {
-      return res.status(400).json({ success: false, message: "Passport is required" });
+      return res
+        .status(400)
+        .json({ success: false, message: "Passport is required" });
     }
     if (!department || !matricNumber) {
-      return res.status(400).json({ success: false, message: "All fields are required" });
+      return res
+        .status(400)
+        .json({ success: false, message: "All fields are required" });
     }
 
     // Upload to Cloudinary using buffer
-    const streamifier = await import('streamifier');
+    const streamifier = await import("streamifier");
     const stream = streamifier.createReadStream(req.file.buffer);
     const uploadResult = await new Promise((resolve, reject) => {
       const uploadStream = cloudinary.uploader.upload_stream(
@@ -38,12 +42,18 @@ export async function createStudent(req, res) {
       passport: uploadResult.secure_url, // Store Cloudinary URL
     });
     await student.save();
-    res.status(201).json({ success: true, message: "Student uploaded successfully" });
+    res
+      .status(201)
+      .json({ success: true, message: "Student uploaded successfully" });
   } catch (error) {
     console.error("Upload controller error:", error);
     if (error.code === 11000) {
-      return res.status(400).json({ success: false, message: "Matric number already exists" });
+      return res
+        .status(400)
+        .json({ success: false, message: "Matric number already exists" });
     }
-    res.status(500).json({ success: false, message: "Server error", error: error.message });
+    res
+      .status(500)
+      .json({ success: false, message: "Server error", error: error.message });
   }
 }
