@@ -1,12 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
-
-const Departments = [
-  { id: 1, name: "Computer Science" },
-  { id: 2, name: "Electrical" },
-  { id: 3, name: "Mechanical" },
-  { id: 4, name: "Civil Engineering" },
-];
+import Departments from "../../assets/assets";
 
 const Home = () => {
   const [department, setDepartment] = useState(Departments[0].name);
