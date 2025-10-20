@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 
 const StudentSchema = new mongoose.Schema({
   department: { type: String, required: true },
+  level: { type: String, required: true }, // Student's current level
   matricNumber: { type: String, required: true, unique: true },
   passport: { type: String, required: true }, // Cloudinary URL
   createdAt: { type: Date, default: Date.now },

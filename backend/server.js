@@ -21,6 +21,9 @@ app.use(
     origin: [
       "https://passport-upload.vercel.app",
       "https://passport-upload-admin.vercel.app",
+      "http://localhost:5173", // Default Vite port
+      "http://localhost:5174", // Alternative Vite port
+      "http://localhost:5175", // Alternative Vite port
     ],
     credentials: true,
   })

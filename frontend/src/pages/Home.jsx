@@ -2,8 +2,11 @@ import React, { useState } from "react";
 import axios from "axios";
 import Departments from "../../assets/assets";
 
+const levels = ["100", "200", "300", "400", "500"];
+
 const Home = () => {
   const [department, setDepartment] = useState(Departments[0].name);
+  const [level, setLevel] = useState(levels[0]);
   const [matricNumber, setMatricNumber] = useState("");
   const [passport, setPassport] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -28,6 +31,7 @@ const Home = () => {
       setLoading(true);
       const formData = new FormData();
       formData.append("department", department);
+      formData.append("level", level);
       formData.append("matricNumber", matricNumber);
       formData.append("passport", passport);
 
@@ -45,6 +49,7 @@ const Home = () => {
       if (response.data.success) {
         setSuccess(response.data.message);
         setDepartment(Departments[0].name);
+        setLevel(levels[0]);
         setMatricNumber("");
         setPassport(null);
       } else {
@@ -81,6 +86,23 @@ const Home = () => {
             {Departments.map((department) => (
               <option key={department.id} value={department.name}>
                 {department.name}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div className="mb-4">
+          <label className="block text-gray-700 text-sm font-bold mb-2">
+            Level
+          </label>
+          <select
+            value={level}
+            onChange={(e) => setLevel(e.target.value)}
+            required
+            className="block w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
+          >
+            {levels.map((lvl) => (
+              <option key={lvl} value={lvl}>
+                {lvl} Level
               </option>
             ))}
           </select>

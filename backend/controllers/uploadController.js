@@ -3,13 +3,13 @@ import cloudinary from "../utils/cloudinary.js";
 
 export async function createStudent(req, res) {
   try {
-    const { department, matricNumber } = req.body;
+    const { department, level, matricNumber } = req.body;
     if (!req.file) {
       return res
         .status(400)
         .json({ success: false, message: "Passport is required" });
     }
-    if (!department || !matricNumber) {
+    if (!department || !level || !matricNumber) {
       return res
         .status(400)
         .json({ success: false, message: "All fields are required" });
@@ -38,6 +38,7 @@ export async function createStudent(req, res) {
 
     const student = new Student({
       department,
+      level,
       matricNumber,
       passport: uploadResult.secure_url, // Store Cloudinary URL
     });
