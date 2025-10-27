@@ -73,94 +73,98 @@ const Departments = [
   },
   {
     id: 19,
-    name: "Estate Management",
+    name: "Environmental Health Sciences",
   },
   {
     id: 20,
-    name: "Geology",
+    name: "Estate Management",
   },
   {
     id: 21,
-    name: "Guidance and Counseling",
+    name: "Geology",
   },
   {
     id: 22,
-    name: "History and International Studies",
+    name: "Guidance and Counseling",
   },
   {
     id: 23,
-    name: "Industrial Chemistry",
+    name: "History and International Studies",
   },
   {
     id: 24,
-    name: "Industrial Relations and Personnel Management",
+    name: "Industrial Chemistry",
   },
   {
     id: 25,
-    name: "Law",
+    name: "Industrial Relations and Personnel Management",
   },
   {
     id: 26,
-    name: "Library and Information Science",
+    name: "Law",
   },
   {
     id: 27,
-    name: "Mass Communication",
+    name: "Library and Information Science",
   },
   {
     id: 28,
-    name: "Mathematics",
+    name: "Mass Communication",
   },
   {
     id: 29,
-    name: "Mechanical Engineering",
+    name: "Mathematics",
   },
   {
     id: 30,
-    name: "Medical Laboratory Science",
+    name: "Mechanical Engineering",
   },
   {
     id: 31,
-    name: "Microbiology",
+    name: "Medical Laboratory Science",
   },
   {
     id: 32,
-    name: "Music",
+    name: "Microbiology",
   },
   {
     id: 33,
-    name: "Performing Arts",
+    name: "Music",
   },
   {
     id: 34,
-    name: "Physics with Electronics",
+    name: "Performing Arts",
   },
   {
     id: 35,
-    name: "Political Science",
+    name: "Physics with Electronics",
   },
   {
     id: 36,
-    name: "Statistics",
+    name: "Political Science",
   },
   {
     id: 37,
-    name: "Surveying and Geo-informatics",
+    name: "Statistics",
   },
   {
     id: 38,
-    name: "Teacher Education Science",
+    name: "Surveying and Geo-informatics",
   },
   {
     id: 39,
+    name: "Teacher Education Science",
+  },
+  {
+    id: 40,
     name: "Christian Religious Studies",
   },
   {
-    id: 40,
+    id: 41,
     name: "Radiography and Radiation Science",
   },
   {
-    id: 40,
+    id: 42,
     name: "Peace Strategy and Conflict Resolution",
   },
 ];
