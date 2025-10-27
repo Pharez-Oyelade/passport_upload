@@ -14,6 +14,7 @@ const Admin = () => {
   const [selectedLevel, setSelectedLevel] = useState("");
   const [deletingId, setDeletingId] = useState(null);
   const [downloading, setDownloading] = useState(false);
+  const [downloadProgress, setDownloadProgress] = useState("");
 
   // Fetch students and departments
   useEffect(() => {
@@ -22,11 +23,13 @@ const Admin = () => {
       setError("");
       try {
         const queryParams = new URLSearchParams();
-        if (selectedDept) queryParams.append('department', selectedDept);
-        if (selectedLevel) queryParams.append('level', selectedLevel);
-        
+        if (selectedDept) queryParams.append("department", selectedDept);
+        if (selectedLevel) queryParams.append("level", selectedLevel);
+
         const res = await axios.get(
-          `${backendUrl}/api/admin/students${queryParams.toString() ? `?${queryParams.toString()}` : ''}`
+          `${backendUrl}/api/admin/students${
+            queryParams.toString() ? `?${queryParams.toString()}` : ""
+          }`
         );
         setStudents(res.data.students);
         // Extract unique departments
@@ -51,16 +54,20 @@ const Admin = () => {
   };
 
   const handleDelete = async (id) => {
-    if (!window.confirm("Are you sure you want to delete this student's passport?")) {
+    if (
+      !window.confirm(
+        "Are you sure you want to delete this student's passport?"
+      )
+    ) {
       return;
     }
-    
+
     setDeletingId(id);
     setError("");
-    
+
     try {
       await axios.delete(`${backendUrl}/api/admin/students/${id}`);
-      setStudents(students.filter(s => s._id !== id));
+      setStudents(students.filter((s) => s._id !== id));
     } catch (err) {
       setError("Failed to delete student");
     } finally {
@@ -69,28 +76,31 @@ const Admin = () => {
   };
 
   const handleBatchDownload = async () => {
-    if (!selectedDept && !selectedLevel) return alert("Select at least a department or level");
-    
+    if (!selectedDept && !selectedLevel)
+      return alert("Select at least a department or level");
+
     setDownloading(true);
     setError("");
-    
+    setDownloadProgress(
+      `Preparing download for ${students.length} passport(s)...`
+    );
+
     try {
       const queryParams = new URLSearchParams();
-      if (selectedDept) queryParams.append('department', selectedDept);
-      if (selectedLevel) queryParams.append('level', selectedLevel);
-      
+      if (selectedDept) queryParams.append("department", selectedDept);
+      if (selectedLevel) queryParams.append("level", selectedLevel);
+
       const res = await axios.get(
         `${backendUrl}/api/admin/download-batch?${queryParams.toString()}`,
-        { 
+        {
           responseType: "blob",
-          timeout: 30000, // 30 second timeout
+          timeout: 120000, // 2 minute timeout for large batches
         }
       );
-      let filename = [
-        selectedDept,
-        selectedLevel && `${selectedLevel}L`,
-        'passports'
-      ].filter(Boolean).join('_') + '.zip';
+      let filename =
+        [selectedDept, selectedLevel && `${selectedLevel}L`, "passports"]
+          .filter(Boolean)
+          .join("_") + ".zip";
       const disposition = res.headers["content-disposition"];
       if (disposition) {
         const match = disposition.match(/filename="(.+)"/);
@@ -104,9 +114,34 @@ const Admin = () => {
       link.click();
       link.remove();
       window.URL.revokeObjectURL(url); // Clean up the blob URL
+      setDownloadProgress("Download complete!");
     } catch (err) {
-      console.error('Download error:', err);
-      setError(err.response?.data?.message || "Failed to download passports. Please try again.");
+      console.error("Download error:", err);
+      let errorMessage = "Failed to download passports. Please try again.";
+
+      if (err.code === "ECONNABORTED") {
+        errorMessage =
+          "Download timeout. The batch is too large. Try filtering by department and level separately, or use the individual download buttons.";
+      } else if (err.response?.data) {
+        try {
+          // For blob response, try to parse it as JSON
+          const reader = new FileReader();
+          reader.onload = () => {
+            try {
+              const errorData = JSON.parse(reader.result);
+              errorMessage = errorData.message || errorMessage;
+            } catch {
+              // Not JSON, use default message
+            }
+          };
+          reader.readAsText(err.response.data);
+        } catch {
+          errorMessage = err.message || errorMessage;
+        }
+      }
+
+      setError(errorMessage);
+      setDownloadProgress("");
     } finally {
       setDownloading(false);
     }
@@ -157,12 +192,23 @@ const Admin = () => {
           </div>
           <button
             onClick={handleBatchDownload}
-            disabled={(!selectedDept && !selectedLevel) || students.length === 0 || downloading}
+            disabled={
+              (!selectedDept && !selectedLevel) ||
+              students.length === 0 ||
+              downloading
+            }
             className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline disabled:opacity-50"
           >
-            {downloading ? "Preparing Download..." : "Download Selected Passports (ZIP)"}
+            {downloading
+              ? "Downloading..."
+              : "Download Selected Passports (ZIP)"}
           </button>
         </div>
+        {downloading && downloadProgress && (
+          <div className="mb-4 text-center text-blue-600 font-semibold">
+            {downloadProgress}
+          </div>
+        )}
         {loading ? (
           <div className="text-center text-gray-600">Loading...</div>
         ) : error ? (
