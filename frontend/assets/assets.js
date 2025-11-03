@@ -133,38 +133,42 @@ const Departments = [
   },
   {
     id: 34,
-    name: "Performing Arts",
+    name: "Nursing",
   },
   {
     id: 35,
-    name: "Physics with Electronics",
+    name: "Performing Arts",
   },
   {
     id: 36,
-    name: "Political Science",
+    name: "Physics with Electronics",
   },
   {
     id: 37,
-    name: "Statistics",
+    name: "Political Science",
   },
   {
     id: 38,
-    name: "Surveying and Geo-informatics",
+    name: "Statistics",
   },
   {
     id: 39,
-    name: "Teacher Education Science",
+    name: "Surveying and Geo-informatics",
   },
   {
     id: 40,
-    name: "Christian Religious Studies",
+    name: "Teacher Education Science",
   },
   {
     id: 41,
-    name: "Radiography and Radiation Science",
+    name: "Christian Religious Studies",
   },
   {
     id: 42,
+    name: "Radiography and Radiation Science",
+  },
+  {
+    id: 43,
     name: "Peace Strategy and Conflict Resolution",
   },
 ];
