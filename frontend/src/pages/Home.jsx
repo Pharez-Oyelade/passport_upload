@@ -135,18 +135,31 @@ const Home = () => {
             />
           )}
           <input
-            onChange={(e) => setPassport(e.target.files[0])}
+            onChange={(e) => {
+              const file = e.target.files[0];
+              if (file) {
+                const validTypes = ["image/jpeg", "image/jpg"];
+                if (!validTypes.includes(file.type)) {
+                  setError("Only JPG or JPEG images are allowed.");
+                  setPassport(null);
+                  e.target.value = null; // Reset the file input
+                  return;
+                }
+                setError("");
+                setPassport(file);
+              }
+            }}
             type="file"
             id="passport"
-            accept="image/*"
+            accept="image/jpeg,image/jpg"
             required
             className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
           />
         </div>
         <div>
           <p className="text-sm text-gray-500 pb-5">
-            Only upload passports. Ensure images have a neutral background and
-            are clear.
+            Only upload passports <span className="font-bold">(JPEG/JPG)</span>.
+            Ensure images have a neutral background and are clear.
           </p>
         </div>
         <button
